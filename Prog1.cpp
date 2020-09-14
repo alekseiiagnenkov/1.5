@@ -2,6 +2,7 @@
 #include <iomanip>
 #include <vector>
 #include "Prog1.h"
+#include <algorithm>  // sort
 
 namespace Prog1 {
 	const char* pr = ""; // будущее сообщение об ошибке
@@ -91,7 +92,7 @@ namespace Prog1 {
 			while (I) {
 				std::cout << std::setw(3) << std::setprecision(3) << I->num << "  ";
 				if (I->next) {
-					i = I->next->X - I->X-1;
+					i = I->next->X - I->X - 1;
 					I = I->next;
 					for (i; i > 0; i--, std::cout << std::setw(3) << std::setprecision(3) << 0 << "  ");
 				}
@@ -103,7 +104,7 @@ namespace Prog1 {
 			std::cout << std::endl;
 
 			if (R->next) {
-				j = R->next->i - R->i-1;
+				j = R->next->i - R->i - 1;
 				for (j; j > 0; j--, print_0(*a - 1));
 				R = R->next;
 			}
@@ -171,13 +172,13 @@ namespace Prog1 {
 		}
 	};
 	//вставка элемента
-	Item* input_Item(Item* i,Item* head) {
+	Item* input_Item(Item* i, Item* head) {
 		if ((i->X) >= (head->X))
 			if (head->next) {
 				Item* I = head->next;
 				while ((i->X) > (I->X))
 					if (I->next)
-						I = I->next; 
+						I = I->next;
 					else {
 						I->next = i;
 						return head;
@@ -243,92 +244,31 @@ namespace Prog1 {
 		}
 		std::vector <double> Vector;
 		Item* I = r->head;
-		//for (I; I->next; I = I->next, Vector.push_back(I->num));
-		//Vector.push_back(I->num);
-		//int i = Vector.size();
-		//if (r->head->num > 0) {
-		//	for (int j = i; j >= 0; j--) {
-		//		for (int k = i; k > 0; k--) {
-		//			if (Vector.at(k) > Vector.at(k - 1)) {
-		//				double r = Vector.at(k);
-		//			}
-		//		}
+		for (I; I->next; Vector.push_back(I->num), I = I->next);
+		Vector.push_back(I->num);
+		int i = Vector.size();
+		if (r->head->num < 0)
+			sort(Vector.begin(), Vector.end());
+		else
+			sort(Vector.begin(), Vector.end(), comp);
 
-		//	}
-		//}
-		//else {
-		//	for (int j = i; j >= 0; j--) {
-
-		//	}
-
-		//}
-		double M = I->num;
-		int i = 0, k=0, flag=1, o=0, q;
-		for (I, i; I->next; I = I->next, i++);
-			std::vector <int> arr(i+1);
-		for (k; k < i; k++, arr.at(k) = 0);
-		k = 0;
-		I = r->head;
-			for (i; i >= 0; i--) {
-				for (I, k; I->next; I = I->next, k++) {
-					if (flag) {
-						for (q = 0; arr.at(q) == 1; q++, I = I->next);
-						M = I->num;
-						arr.at(q) = 1;
-						o = q;
-						flag = 0;
-						I = r->head;
-					}
-					if ((r->head->num > 0)) {
-						if (M > I->num && arr.at(k) != 1) {
-							M = I->num;
-							arr.at(k) = 1;
-							arr.at(o) = 0;
-							o = k;
-						}
-					}
-					else
-						if (M < I->num && arr.at(k) != 1) {
-							M = I->num;
-							arr.at(k) = 1;
-							arr.at(o) = 0;
-							o = k;
-						}
-				}
-				if ((r->head->num > 0)) {
-					if (M > I->num && arr.at(k) != 1) {
-						M = I->num;
-						arr.at(k) = 1;
-						arr.at(o) = 0;
-						o = k;
-					}
-				}
-				else
-					if (M < I->num && arr.at(k) != 1) {
-						M = I->num;
-						arr.at(k) = 1;
-						arr.at(o) = 0;
-						o = k;
-					}
-				I = r->head;
-				k = 0;
-				flag = 1;
-				Vector.push_back(M);
-			}
-		arr.clear();
 		std::cout << "Vector-->  ";
 		for (i = 0; i < Vector.size(); i++)
 			std::cout << Vector.at(i) << "  ";
-			Vector.clear();
+		Vector.clear();
 		std::cout << std::endl;
 	}
 	//summ row
-	double SUM(Item *I) {
+	double SUM(Item* I) {
 		double sum = I->num;
 		while (I->next) {
 			I = I->next;
 			sum = sum + I->num;
 		}
 		return sum;
+	}
+
+	bool comp(int a, int b) {
+		return a > b;
 	}
 }
