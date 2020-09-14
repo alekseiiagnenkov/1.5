@@ -268,7 +268,7 @@ namespace Prog1 {
 		return sum;
 	}
 
-	bool comp(int a, int b) {
+	bool comp(double a, double b) {
 		return a > b;
 	}
 }
